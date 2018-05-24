@@ -22,13 +22,15 @@
       // The inline CSS rules are used to resize the image
       //
       smallImage.src = "data:image/jpeg;base64," + imageData;
+	  
+	  
     }
     
 	// Called when a photo is successfully retrieved
     //
     function onPhotoFileSuccess(imageData) {
       // Get image handle
-      console.log(JSON.stringify(imageData));
+      //console.log(JSON.stringify(imageData));
       
    	  // Get image handle
       //
@@ -39,7 +41,10 @@
       // Show the captured photo
       // The inline CSS rules are used to resize the image
       //
-      smallImage.src = imageData;
+      smallImage.src = "data:image/jpeg;base64, " +  imageData;
+	  
+	  
+
     }
     // Called when a photo is successfully retrieved
     //
@@ -47,7 +52,7 @@
       // Uncomment to view the image file URI 
       // console.log(imageURI);
       // Get image handle
-      //
+      
       var largeImage = document.getElementById('largeImage');
       // Unhide image elements
       //
@@ -56,6 +61,25 @@
       // The inline CSS rules are used to resize the image
       //
       largeImage.src = imageURI;
+	  
+	  var options = new FileUploadOptions();
+      options.fileKey = "file";
+      options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+      options.mimeType = "image/jpeg";
+
+      var params = {};
+      params.value1 = "test";
+      params.value2 = "param";
+
+      options.params = params;
+      options.chunkedMode = false;
+
+      var ft = new FileTransfer();
+      ft.upload(imageURI, "http://localhost/pgexample/teacherapp2/www/upload.php", function(result){
+         alert('successfully uploaded ' + result.response);
+      }, function(error){
+         alert('error : ' + JSON.stringify(error));
+      }, options);
     }
     // A button will call this function
     //
