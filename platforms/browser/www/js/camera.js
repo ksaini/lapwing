@@ -75,7 +75,7 @@
       options.chunkedMode = false;
 
       var ft = new FileTransfer();
-      ft.upload(imageURI, "http://localhost/pgexample/teacherapp2/www/upload.php", function(result){
+      ft.upload(imageURI, "http://greyboxerp.com/studentapp/upload.php", function(result){
          alert('successfully uploaded ' + result.response);
       }, function(error){
          alert('error : ' + JSON.stringify(error));
