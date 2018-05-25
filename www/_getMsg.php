@@ -3,6 +3,8 @@
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
+include_once("./mvariables.php");
+verifyuser("admin","Sunny123");
 include_once("./variables.php");
 
 $cid = $_GET['cid'];
@@ -15,7 +17,7 @@ if($read!=null && strlen($read) > 0){
 	ob_end_clean();
 }
 
-$msgs =	runQuery("SELECT m.mid,m.msg,m.scope,m.scopeid,m.ts,m.status,s.fname from m_msg_tbl m, s_student_tbl s where  m.scope=$cid and m.scopeid= s.admn and m.status =0;");	
+$msgs =	runQuery("SELECT m.mid,m.msg,m.scope,m.scopeid,m.ts,m.status,s.fname, m.ts from m_msg_tbl m, s_student_tbl s where  m.scope=$cid and m.scopeid= s.admn and m.status =0;");	
 echo json_encode($msgs);
 
 

@@ -1,5 +1,6 @@
 <?php
-
+include_once("./mvariables.php");
+verifyuser("admin","Sunny123");
 include_once("variables.php");
 
 $sessionid = 1;

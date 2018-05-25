@@ -1,4 +1,5 @@
-var base_url = "http://localhost/pgexample/teacherapp/www/";
+//var base_url = "http://localhost/pgexample/teacherapp/www/";
+var base_url = "http://greyboxerp.com/studentapp/";
 var att = [];
 
 function getCID(){
@@ -65,11 +66,11 @@ function populateMsg(data){
 			
 			if(data[i]['scope']!="cid" && data[i]['scope']!="sid"){
 				// Individual msg from Student
-				msgstr += getLeftMsg(data[i]['msg'],data[i]['fname'],data[i]['scopeid'],data[i]['mid']);
+				msgstr += getLeftMsg(data[i]['msg'],data[i]['fname'],data[i]['scopeid'],data[i]['mid'], data[i]['ts']);
 			}
 			else if(data[i]['scope']=="sid"){
 				// Individual repl to student
-				msgstr += getRightMsg(data[i]['msg'],data[i]['scopeid']);				
+				msgstr += getRightMsg(data[i]['msg'],data[i]['scopeid'], data[i]['ts']);				
 			}	
 			
 			tmp = data[i]['mid'];           
@@ -79,7 +80,7 @@ function populateMsg(data){
 		chat.innerHTML = msgstr;
 }
 
-function getLeftMsg(m,id,sid,mid){
+function getLeftMsg(m,id,sid,mid,ts){
 	var icon = id.substr(0,2).toUpperCase();
 	
 	msg = "<li id='m_"+mid+"' class='left clearfix'><span class='chat-img pull-left'>";
@@ -87,7 +88,7 @@ function getLeftMsg(m,id,sid,mid){
     msg += "<div class='circleBase type1' style='background:#"+getRandomColor(sid)+"'>"+icon+"</div>";
 	msg += "</span><div class='chat-body clearfix'><div class='header'>";
 	msg += "<strong class='primary-font'>"+ id +"</strong> <small class='pull-right text-muted'>";
-	msg += "<i class='fa fa-clock-o'></i></span> 12 mins ago</small></div>";
+	msg += "<i class='fa fa-clock-o'></i></span> "+formatDateY(ts)+"</small></div>";
 	msg += "<p>" + m ;
 	msg += "<span style='float:right;'><i class='fa fa-reply' onclick=\'gotochat("+sid+",&apos;"+id+"&apos;)\'> </i>&nbsp;&nbsp;<span onclick='markread("+mid+")' class='markread'> Mark as read  </span></span>";
 	msg += "  </p></div> </li>";
@@ -95,12 +96,12 @@ function getLeftMsg(m,id,sid,mid){
 	return msg;	
 }
 
-function getRightMsg(m,id){
+function getRightMsg(m,id,ts){
 	msg = "<li class='right clearfix'><span class='chat-img pull-right'>";
 	msg += "<img src='http://placehold.it/50/FA6F57/fff&text=R' alt='User Avatar' class='img-circle' /></span>";
     msg += "<div class='chat-body clearfix'><div class='header'>";
 	msg += "<small class='pull-left text-muted'>";
-	msg += "<i class='fa fa-clock-o'></i></span> 12 mins ago</small></div><br>";
+	msg += "<i class='fa fa-clock-o'></i></span> "+formatDateY(ts)+"</small></div><br>";
 	msg += "<p>" + m ;
 	msg += "  </p></div> </li>";
     
@@ -203,9 +204,9 @@ var sql = "cid=" + localStorage.getItem("cid");
 		}
 	};
 	
-	var base_url = document.URL.substr(0,document.URL.lastIndexOf('/'));
+	//var base_url = document.URL.substr(0,document.URL.lastIndexOf('/'));
 	
-	req.open("GET", base_url + "/getStudents.php?" +  sql, true);
+	req.open("GET", base_url + "/_getStudents.php?" +  sql, true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send();
 	
@@ -226,9 +227,9 @@ var sql = "cid=" + localStorage.getItem("cid");
 		}
 	};
 	
-	var base_url = document.URL.substr(0,document.URL.lastIndexOf('/'));
+	//var base_url = document.URL.substr(0,document.URL.lastIndexOf('/'));
 	
-	req.open("GET", base_url + "/getStudentsAtt.php?" +  sql, true);
+	req.open("GET", base_url + "/_getStudentsAtt.php?" +  sql, true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send();
 	
@@ -338,9 +339,9 @@ function sendAtt(){
 		}
 	};
 	
-	var base_url = document.URL.substr(0,document.URL.lastIndexOf('/'));
+//	var base_url = document.URL.substr(0,document.URL.lastIndexOf('/'));
 	
-	req.open("POST", base_url + "/saveattendence.php", true);
+	req.open("POST", base_url + "/_saveattendence.php", true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send(sql);
 	
@@ -353,7 +354,7 @@ function showHW(){
 			try {
 				var hw = document.getElementById("notice");
 				localStorage.setItem("hwlist",hw.innerHTML);  
-				hw.innerHTML = "<div id='back'><i class='fa fa-2x fa-arrow-circle-left' onclick='backHW();'></i> &nbsp; Back</div><br>";
+				//hw.innerHTML = "<div id='back'><i class='fa fa-2x fa-arrow-circle-left' onclick='backHW();'></i> &nbsp; Back</div><br>";
 				hw.classList.add('notesArea');
 				var data=JSON.parse(req.responseText);
 	
@@ -376,7 +377,7 @@ function showHW(){
 		}
 	};
 	
-	req.open("GET", base_url + "/getHW.php?cid=" + localStorage.getItem("cid"), true);
+	req.open("GET", base_url + "/_getHW.php?cid=" + localStorage.getItem("cid"), true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send();
 }
@@ -384,4 +385,71 @@ function showHW(){
 function addHW(){
 	document.getElementById("panel-footer").classList.remove("gbhide");
 	window.scrollTo(0,document.body.scrollHeight+300);
+}
+
+function formatDateY(dt){
+	if(dt == null) return "Sending..";
+	try{
+		var dateObj = new Date(dt);
+		var month = dateObj.getUTCMonth() + 1; //months from 1-12
+		var day = dateObj.getUTCDate();
+		var m = dateObj.getMinutes();
+		if(m < 10)
+			newdate =  getM(month) + " " + day + " " + dateObj.getHours() + ":0" +dateObj.getMinutes() + " " ;
+		else
+			newdate =  getM(month) + " " + day + " " + dateObj.getHours() + ":" +dateObj.getMinutes() + " " ;
+				
+		return newdate;
+	} catch(e){return dt;}
+}
+
+function getM(m){
+ if(m==1)
+ 	return "Jan";
+ else if(m==2)
+    return "Feb";
+ else if(m==3)
+    return "Mar"; 
+ else if(m==4)
+    return "Apr";  
+ else if(m==5)
+    return "May"; 
+ else if(m==6)
+    return "Jun";   
+ else if(m==7)
+    return "Jul"; 
+ else if(m==8)
+    return "Aug";  
+ else if(m==9)
+    return "Sep";  
+ else if(m==10)
+    return "Oct"; 
+ else if(m==11)
+    return "Nov";
+ else if(m==12)
+    return "Dec";     
+
+}
+
+function sendHW(sub,hwdesc,imguri){
+	
+	var sql = "sub=" + sub + "&hwdesc=" + hwdesc + "&cid=" + localStorage.getItem("cid");
+	var req = new XMLHttpRequest();
+	req.onreadystatechange = function() {
+		if (req.readyState == 4 && req.status == 200) {
+			try {
+				//alert(req.responseText);
+				
+				location.reload();
+				
+								
+			} catch (e) {
+				console.log("Exception::-"+e.toString());
+			}
+		}
+	};
+	
+	req.open("GET", base_url + "/_setHW.php?" + sql, true);
+	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	req.send();
 }

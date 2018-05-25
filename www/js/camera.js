@@ -1,3 +1,5 @@
+var base_url = "http://greyboxerp.com/studentapp/";
+
  var pictureSource;   // picture source
     var destinationType; // sets the format of returned value 
     // Wait for PhoneGap to connect with the device
@@ -28,9 +30,9 @@
     
 	// Called when a photo is successfully retrieved
     //
-    function onPhotoFileSuccess(imageData) {
+    function onPhotoFileSuccess(imageURI) {
       // Get image handle
-      //console.log(JSON.stringify(imageData));
+      //console.log(JSON.stringify(imageURI));
       
    	  // Get image handle
       //
@@ -41,7 +43,8 @@
       // Show the captured photo
       // The inline CSS rules are used to resize the image
       //
-      smallImage.src = imageData;
+      smallImage.src = imageURI;
+	  localStorage.setItem("imageURL", imageURI);
 	  
 	  
 
@@ -61,7 +64,9 @@
       // The inline CSS rules are used to resize the image
       //
       largeImage.src = imageURI;
+	  localStorage.setItem("imageURL", imageURI);
 	  
+	/**
 	  var options = new FileUploadOptions();
       options.fileKey = "file";
       options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
@@ -75,11 +80,12 @@
       options.chunkedMode = false;
 
       var ft = new FileTransfer();
-      ft.upload(imageURI, "http://greyboxerp.com/studentapp/upload.php", function(result){
+      ft.upload(imageURI, base_url + "upload.php", function(result){
          alert('successfully uploaded ' + result.response);
       }, function(error){
          alert('error : ' + JSON.stringify(error));
       }, options);
+	  **/
     }
     // A button will call this function
     //

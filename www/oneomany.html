@@ -118,21 +118,21 @@ body {
             <div class="panel panel-primary">
                 <div class="panel-heading sticky">
                     
-					<div id="cid"><i class="fa fa-arrow-circle-left" onclick="window.location.href='communicate.html'"></i>&nbsp; 1-To-1 Chat</div>
+					<div id="cid"><i class="fa fa-arrow-circle-left" onclick="window.location.href='communicate.html'"></i>&nbsp; Broadcast</div>
                     <div class="btn-group pull-right">
                         
                     </div>
                 </div>
                 <div class="panel-body">
                     <ul class="chat" id="chat">
-                       No communications to show
+                       
                     </ul>
                 </div>
                 <div class="panel-footer stickyfooter" id="panel-footer">
                     <div class="input-group">
                         <input id="btn-input" type="text" style="height:41px;" class="form-control input-sm" placeholder="Type your message here..." autofocus />
                         <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" style="height:42px;" id="btn-chat" onclick="sendmsg(getParameterByName('sid'));">Send</button>
+                            <button class="btn btn-warning btn-sm" style="height:42px;" id="btn-chat" onclick="broadcastmsg();">Send</button>
                         </span>
                     </div>
                 </div>
@@ -143,16 +143,11 @@ body {
 </body>
 <script src='js/dataTbl.js'></script>
 <script src='js/msgs.js'></script>
-<script>
-	//localStorage.clear();
-	
-	var sid = getParameterByName("sid");
+<script>	
+	var cid = localStorage.getItem("cid");
 	var mid = 0;//getMessageID();
-	getNewMsg(sid,mid);
-	
-	//populateLocalMsg(mid);
-	
-	//populateRemoteMsg();
+	getNewBroadCastMsg(cid,mid);
+
 </script>	
 <script>
 

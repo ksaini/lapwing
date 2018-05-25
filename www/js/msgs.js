@@ -1,4 +1,5 @@
-var base_url = "http://localhost/pgexample/teacherapp/www/";
+//var base_url = "http://localhost/pgexample/teacherapp/www/";
+var base_url = "http://greyboxerp.com/studentapp/";
 
 function getSID(){
 	var sid = localStorage.getItem("sid");
@@ -62,15 +63,15 @@ function populateMsg(data){
 			
 			if(data[i]['scope']!="cid" && data[i]['scope']!="sid"){
 				// Individual msg from Student
-				msgstr += getLeftMsg(data[i]['msg'],name,data[i]['scopeid'],data[i]['mid']);
+				msgstr += getLeftMsg(data[i]['msg'],name,data[i]['scopeid'],data[i]['mid'],  data[i]['ts']);
 			}
 			else if(data[i]['scope']=="sid"){
 				// Individual repl to student
-				msgstr += getRightMsg(data[i]['msg'],"",data[i]['scopeid'],data[i]['mid']);				
+				msgstr += getRightMsg(data[i]['msg'],"",data[i]['scopeid'],data[i]['mid'], data[i]['ts']);				
 			}	
 			else if(data[i]['cid']==localStorage.getItem("cid") ){
 				// Announcements for a given class
-				msgstr += getRightMsg(data[i]['msg'],"<i class='fa fa-rotate-180 fa-volume-up'></i>",data[i]['scopeid'],data[i]['mid']);
+				msgstr += getRightMsg(data[i]['msg'],"<i class='fa fa-rotate-180 fa-volume-up'></i>",data[i]['scopeid'],data[i]['mid'],  data[i]['ts']);
 			}
 			
 			tmp = data[i]['mid'];           
@@ -82,7 +83,7 @@ function populateMsg(data){
 		
 }
 
-function getLeftMsg(m,id,sid,mid){
+function getLeftMsg(m,id,sid,mid, ts){
 	var icon = id.substr(0,2).toUpperCase();
 	
 	msg = "<li id='m_"+mid+"' class='left clearfix'><span class='chat-img pull-left'>";
@@ -90,14 +91,14 @@ function getLeftMsg(m,id,sid,mid){
 	  msg += "<div class='circleBase type1' style='background:#"+getRandomColor(sid)+"'>"+icon+"</div>";
     msg += "</span><div class='chat-body clearfix'><div class='header'>";
 	msg += "<strong class='primary-font'>"+ id +"</strong> <small style='font-size:8px;' class='pull-right text-muted'>";
-	msg += "<i class='fa fa-clock-o'></i></span> 12 mins ago</small></div>";
+	msg += "<i class='fa fa-clock-o'></i></span> "+formatDateY(ts)+"</small></div>";
 	msg += "<p>" + m ;
 	msg += "  </p></div> </li>";
     
 	return msg;	
 }
 
-function getRightMsg(m,id,sid,mid){
+function getRightMsg(m,id,sid,mid, ts){
 	var icon = "R";
 	
 	msg = "<li id='m_"+mid+"' class='right clearfix' style='background-color:#e6fff9;'><span class='chat-img pull-right'>";
@@ -108,7 +109,7 @@ function getRightMsg(m,id,sid,mid){
 	msg += "<p style='text-align:right;padding-top:5px;'>" + m ;
 	
 	msg += "</p><small style='font-size:8px;' class='pull-right text-muted'>";
-	msg += "<i class='fa fa-clock-o'></i></span> 12 mins ago</small></div> </li>";
+	msg += "<i class='fa fa-clock-o'></i></span> "+formatDateY(ts)+"</small></div> </li>";
     
 	return msg;	
 }
@@ -119,6 +120,16 @@ function getRightMsg(m,id,sid,mid){
 function sendmsg(sid){
 	var msg = document.getElementById("btn-input").value;
 	var sql = "scope=sid&sid=" + sid + "&cid=" + localStorage.getItem("cid") + "&msg=" + msg;
+	sendmessage(sql,msg);
+}
+
+function broadcastmsg(){
+	var msg = document.getElementById("btn-input").value;
+	var sql = "scope=cid&sid=" + localStorage.getItem("cid") + "&cid=" + localStorage.getItem("cid") + "&msg=" + msg;
+	sendmessage(sql,msg);
+}
+
+function sendmessage(sql,msg){
 	var req = new XMLHttpRequest();
 	req.onreadystatechange = function() {
 		if (req.readyState == 4 && req.status == 200) {
@@ -137,8 +148,73 @@ function sendmsg(sid){
 		}
 	};
 	
-	req.open("GET", base_url + "/setMsg.php?" + sql, true);
+	req.open("GET", base_url + "/_setMsg.php?" + sql, true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send();
 }
 
+function formatDateY(dt){
+	if(dt == null) return "Sending..";
+	try{
+		var dateObj = new Date(dt);
+		var month = dateObj.getUTCMonth() + 1; //months from 1-12
+		var day = dateObj.getUTCDate();
+		var m = dateObj.getMinutes();
+		if(m < 10)
+			newdate =  getM(month) + " " + day + " " + dateObj.getHours() + ":0" +dateObj.getMinutes() + " " ;
+		else
+			newdate =  getM(month) + " " + day + " " + dateObj.getHours() + ":" +dateObj.getMinutes() + " " ;
+				
+		return newdate;
+	} catch(e){return dt;}
+}
+
+function getM(m){
+ if(m==1)
+ 	return "Jan";
+ else if(m==2)
+    return "Feb";
+ else if(m==3)
+    return "Mar"; 
+ else if(m==4)
+    return "Apr";  
+ else if(m==5)
+    return "May"; 
+ else if(m==6)
+    return "Jun";   
+ else if(m==7)
+    return "Jul"; 
+ else if(m==8)
+    return "Aug";  
+ else if(m==9)
+    return "Sep";  
+ else if(m==10)
+    return "Oct"; 
+ else if(m==11)
+    return "Nov";
+ else if(m==12)
+    return "Dec";     
+
+}
+
+function getNewBroadCastMsg(cid,mid){
+	
+	var sql = "cid=" + cid + "&mid=" + mid;
+	var req = new XMLHttpRequest();
+	req.onreadystatechange = function() {
+		if (req.readyState == 4 && req.status == 200) {
+			try {
+				//alert(req.responseText);
+				var dataArray=JSON.parse(req.responseText);
+				populateMsg(dataArray);
+								
+			} catch (e) {
+				console.log("Exception::-"+e.toString());
+			}
+		}
+	};
+	
+	req.open("GET", base_url + "/_getBroadcast.php?" + sql, true);
+	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	req.send();
+}
