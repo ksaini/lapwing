@@ -209,7 +209,7 @@ body {
   
   function hw(){
    var sub = document.getElementById("subject").value.trim();
-   var hwdesc = document.getElementById("hwdesc").value;
+   var hwdesc = document.getElementById("hwdesc").value.replace(/\n/g, "<br>");
    var imguri = localStorage.getItem("imageURI");
    
    if(sub.length > 0 && hwdesc.length > 0){

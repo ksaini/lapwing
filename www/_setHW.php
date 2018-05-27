@@ -8,7 +8,8 @@ verifyuser("admin","Sunny123");
 include_once("./variables.php");
 
 $sub = $_GET['sub'];
-$hwdesc = $_GET['hwdesc'];
+//$hwdesc = nl2br($_GET['hwdesc']);
+$hwdesc =  nl2br(htmlentities($_GET['hwdesc'], ENT_QUOTES, 'UTF-8'));
 $cid = $_GET['cid'];
 $img = $_GET['img'];
 if(strlen($img) > 0)

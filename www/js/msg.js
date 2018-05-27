@@ -359,7 +359,7 @@ function showHW(){
 				var data=JSON.parse(req.responseText);
 	
 				for (var i = 0; i < data.length; i++) {		
-					hw.innerHTML += "<div  style='height: 60px;font-family:Comic Sans MS;text-transform:capitalize;'><p style='margin-left:10px'><small style='color:orange;'>" + data[i]['hwdate'] + "</small><br>" + "<b> "+data[i]['subject']+" </b> : "  + data[i]['descr'] ;
+					hw.innerHTML += "<div  style='height: 60px;font-family:Comic Sans MS;text-transform:capitalize;'><p style='margin-left:10px'><small style='color:orange;white-space: pre-wrap;'>" + data[i]['hwdate'] + "</small><br>" + "<b> "+data[i]['subject']+" </b> : "  + data[i]['descr'] ;
 		
 					if(data[i]['imgs'].length>0){
 						var imgs = data[i]['imgs'].split(',');
