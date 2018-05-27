@@ -44,7 +44,7 @@ var base_url = "http://greyboxerp.com/studentapp/";
       // The inline CSS rules are used to resize the image
       //
       smallImage.src = imageURI;
-	  localStorage.setItem("imageURL", imageURI);
+	  localStorage.setItem("imageURI", imageURI);
 	  
 	  
 
@@ -64,9 +64,14 @@ var base_url = "http://greyboxerp.com/studentapp/";
       // The inline CSS rules are used to resize the image
       //
       largeImage.src = imageURI;
-	  localStorage.setItem("imageURL", imageURI);
-	  
-	/**
+	  localStorage.setItem("imageURI", imageURI);
+	
+    }
+	
+	//Upload ImageURI to the server
+	function uploadImageURI(imageURI,fname){
+	 
+	 
 	  var options = new FileUploadOptions();
       options.fileKey = "file";
       options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
@@ -80,13 +85,14 @@ var base_url = "http://greyboxerp.com/studentapp/";
       options.chunkedMode = false;
 
       var ft = new FileTransfer();
-      ft.upload(imageURI, base_url + "upload.php", function(result){
+      ft.upload(imageURI, base_url + "upload.php?fname="+ fname, function(result){
          alert('successfully uploaded ' + result.response);
       }, function(error){
          alert('error : ' + JSON.stringify(error));
       }, options);
-	  **/
-    }
+	  
+	  
+	
     // A button will call this function
     //
     function capturePhotoWithData() {

@@ -433,7 +433,14 @@ function getM(m){
 
 function sendHW(sub,hwdesc,imguri){
 	
-	var sql = "sub=" + sub + "&hwdesc=" + hwdesc + "&cid=" + localStorage.getItem("cid");
+	var imageURI = localStorage.getItem("imageURI");
+	if(imageURI.length > 0){
+		var dt = Date.now();
+		uploadImageURI(imageURI,dt);
+		var sql = "sub=" + sub + "&hwdesc=" + hwdesc + "&cid=" + localStorage.getItem("cid") + "&img=" + dt;
+	 }	
+	
+	var sql = "sub=" + sub + "&hwdesc=" + hwdesc + "&cid=" + localStorage.getItem("cid") + "&img=";	
 	var req = new XMLHttpRequest();
 	req.onreadystatechange = function() {
 		if (req.readyState == 4 && req.status == 200) {

@@ -1,7 +1,10 @@
 <?php
 
 // Set new file name
-$new_image_name = "newimage_".mt_rand().".jpg";
+if(isset($_GET['fname']))
+	$new_image_name = $_GET['fname']."_".".jpg";
+else
+	$new_image_name = "newimage_".mt_rand().".jpg";
 
 // upload file
 
