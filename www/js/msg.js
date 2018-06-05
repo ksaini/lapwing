@@ -384,7 +384,7 @@ function showHW(){
 
 function addHW(){
 	document.getElementById("panel-footer").classList.remove("gbhide");
-	window.scrollTo(0,document.body.scrollHeight+300);
+	window.scrollTo(0,document.body.scrollHeight+ 50);
 }
 
 function formatDateY(dt){

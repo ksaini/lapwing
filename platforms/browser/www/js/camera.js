@@ -86,12 +86,12 @@ var base_url = "http://greyboxerp.com/studentapp/";
 
       var ft = new FileTransfer();
       ft.upload(imageURI, base_url + "upload.php?fname="+ fname, function(result){
-         alert('successfully uploaded ' + result.response);
+         //alert('successfully uploaded ' + result.response);
       }, function(error){
          alert('error : ' + JSON.stringify(error));
       }, options);
 	  
-	  
+	}
 	
     // A button will call this function
     //

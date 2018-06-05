@@ -36,18 +36,26 @@ body {
 	height: 100%;
 }	
 	
-.slim {
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+.slimL {
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-top: 7px;
+  padding-bottom: 7px;
   margin-bottom:0px;
   height:100%;
   text-align:center;
-  border-radius: 7px;
+}
+.slimR {
+  padding-left: 5px;
+  padding-right: 20px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-bottom:0px;
+  height:100%;
+  text-align:center;
 }
 .fixedH {
-	height : 150px;
+	height : 120px;
 }
 .casa {
 	background-color:#F4B350;
@@ -63,11 +71,20 @@ body {
 	color:black;
 }
 .spray {
-	background-color:#EB9532;//#81CFE0;
+	background-color:#34495E;
 	color:white;
 }
 a {
   text-decoration: none !important; 
+}
+.navbar-custom{
+	background-color: #34495E;
+}
+a{
+	color:white
+}
+.icon-bar{
+	background-color:white;
 }
 
 </style>
@@ -76,9 +93,7 @@ a {
 
 <body  >
 <form>
-
-<div class="container">
-<nav class="navbar navbar-inverse" style="margin-left:-25px;">
+<nav class="navbar navbar-custom">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -100,11 +115,12 @@ a {
     </div>
   </div>
 </nav>
+<div class="container">
     <div class="row">
 	
-        <div class="col-xs-6 slim fixedH " >
+        <div class="col-xs-6 slimL fixedH " >
 			<a href="./attendance.html">
-			<div class="panel panel-primary slim casa"><br>
+			<div class="panel panel-primary slim spray"><br>
 				<i id='users' class="fa fa-3x fa-user"></i>
 				<h6>Mark Attendance</h6>
 				<p></p>
@@ -112,9 +128,9 @@ a {
 			</a>
 		</div>
 		
-		 <div class="col-xs-6 slim fixedH">
+		 <div class="col-xs-6 slimR fixedH">
 			<a href="./communicate.html">
-			<div class="panel panel-primary slim seablue"><br>
+			<div class="panel panel-primary slim spray"><br>
 				<i id='users' class="fa fa-3x fa-comment"></i>
 				<h6>Discussions</h6>
 				<p></p>
@@ -122,9 +138,9 @@ a {
 			</a>
 		</div>
 		
-		 <div class="col-xs-6 slim fixedH">
+		 <div class="col-xs-6 slimL fixedH">
 			<a href="./homework.html">
-			<div class="panel panel-primary slim seablue"><br>
+			<div class="panel panel-primary slim spray"><br>
 				<i id='users' class="fa fa-3x fa-comment"></i>
 				<h6>HomeWork</h6>
 				<p></p>
